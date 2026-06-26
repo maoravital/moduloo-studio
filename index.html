@@ -153,12 +153,23 @@
   .btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);transform:translateY(-2px)}
   .btn--solid{background:var(--accent);color:#fff;border-color:var(--accent)}
   .btn--solid:hover{background:#7a3cb5;border-color:#7a3cb5;color:#fff;box-shadow:0 14px 40px -12px rgba(98,47,147,.6)}
-  /* header CTA - must read on any background (gold hero + dark scrolled) */
+  /* header CTA - glossy purple, black text, interactive */
   .btn--nav{
-    background:#ffffff;color:#0d0d0f;border-color:#ffffff;
-    box-shadow:0 6px 22px -8px rgba(0,0,0,.55);
+    position:relative;overflow:hidden;border:none;font-weight:700;color:#0d0d0f;
+    background:linear-gradient(135deg,#b98ee8 0%,#8b54c4 52%,#6f37a8 100%);
+    box-shadow:0 8px 22px -8px rgba(98,47,147,.85), inset 0 1px 0 rgba(255,255,255,.45);
+    transition:transform .3s var(--ease), box-shadow .3s var(--ease), filter .3s var(--ease);
   }
-  .btn--nav:hover{background:var(--accent-2);border-color:var(--accent-2);color:#0d0d0f;transform:translateY(-2px);box-shadow:0 14px 40px -12px rgba(98,47,147,.7)}
+  .btn--nav::after{
+    content:"";position:absolute;top:0;bottom:0;left:-65%;width:48%;z-index:1;
+    background:linear-gradient(120deg,transparent,rgba(255,255,255,.6),transparent);
+    transform:skewX(-20deg);animation:btnShine 3.4s ease-in-out infinite;
+  }
+  .btn--nav > *{position:relative;z-index:2}
+  @keyframes btnShine{0%{left:-65%}55%{left:150%}100%{left:150%}}
+  .btn--nav:hover{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 14px 34px -8px rgba(98,47,147,1), inset 0 1px 0 rgba(255,255,255,.5)}
+  .btn--nav:active{transform:translateY(0) scale(.98)}
+  @media(prefers-reduced-motion:reduce){.btn--nav::after{animation:none;opacity:0}}
   .btn svg{width:17px;height:17px}
   .nav__burger{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:8px}
   .nav__burger span{width:24px;height:2px;background:var(--text);transition:.3s var(--ease)}
@@ -595,7 +606,7 @@
       <a href="#about">אודות</a>
       <a href="#projects">פרויקטים</a>
       <a href="#clients">לקוחות</a>
-      <a class="btn btn--nav" href="https://wa.me/972508649221" target="_blank" rel="noopener">דברו איתנו</a>
+      <a class="btn btn--nav" href="https://wa.me/972508649221" target="_blank" rel="noopener"><span>דברו איתנו</span></a>
     </nav>
     <button class="nav__burger" id="burger" aria-label="תפריט"><span></span><span></span><span></span></button>
   </div>
