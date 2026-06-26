@@ -357,16 +357,10 @@
   /* ---------- Social float (logo-only, no background) ---------- */
   .social-float{position:fixed;bottom:24px;left:24px;z-index:200;display:flex;flex-direction:column;gap:14px}
   .sfab{display:grid;place-items:center;filter:drop-shadow(0 4px 12px rgba(0,0,0,.45));
-    transition:transform .35s var(--ease);position:relative}
+    transition:transform .35s var(--ease)}
   .sfab:hover{transform:scale(1.12)}
-  .sfab--wa svg,.sfab--ig svg{position:relative;z-index:1}
   .sfab--wa svg{width:52px;height:52px}
   .sfab--ig svg{width:50px;height:50px}
-  /* premium WhatsApp pulse */
-  .sfab--wa::before{content:"";position:absolute;inset:9px;border-radius:50%;background:#25D366;z-index:0;
-    animation:waPulse 2.6s cubic-bezier(.4,0,.6,1) infinite}
-  @keyframes waPulse{0%{transform:scale(.8);opacity:.55}70%{opacity:0}100%{transform:scale(2);opacity:0}}
-  @media(prefers-reduced-motion:reduce){.sfab--wa::before{animation:none;opacity:0}}
 
   /* ---------- Mobile ---------- */
   @media(max-width:920px){
