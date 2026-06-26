@@ -422,6 +422,51 @@
   .vintro-sound .ic-off{display:none}
   .vintro-sound.muted .ic-on{display:none}
   .vintro-sound.muted .ic-off{display:inline-flex}
+
+  /* ============ MOBILE POLISH (no cropping, fits cleanly) ============ */
+  html,body{max-width:100%;overflow-x:hidden}
+  img,svg,video{max-width:100%}
+  @media(max-width:760px){
+    /* show the WHOLE intro video on phones - never crop it */
+    #vintro video{object-fit:contain}
+    .opening-title{font-size:clamp(30px,8.5vw,60px)}
+    .vintro-skip,.vintro-sound{font-size:13px;padding:8px 15px}
+    .vintro-skip{top:16px;right:16px}
+    .vintro-sound{top:58px;right:16px}
+    /* lightbox controls fit small screens */
+    .lb{padding:14px}
+    .lb__x{top:14px;left:14px;width:40px;height:40px;font-size:20px}
+    .lb__nav{width:44px;height:44px;font-size:22px}
+    .lb__nav.prev{right:8px}.lb__nav.next{left:8px}
+    /* tighter client logos */
+    .logos{gap:28px 34px}
+    .logos img{height:30px}.logos img.tall{height:42px}
+  }
+  @media(max-width:560px){
+    .nav__logo img{height:27px}
+    .sec-head{margin-bottom:48px}
+    .opening-head{margin-bottom:40px}
+    .journey{gap:60px;margin-top:52px}
+    /* QR card never overflows */
+    .qr-card{gap:14px;padding:14px}
+    .qr-card img{width:96px;height:96px}
+    .qr-card__t .d{max-width:none}
+    .ccard{padding:18px 18px;gap:14px}
+    .ccard__t .v{font-size:16px}
+    /* smaller floating social on phones */
+    .social-float{bottom:18px;left:18px;gap:12px}
+    .sfab--wa svg{width:46px;height:46px}
+    .sfab--ig svg{width:44px;height:44px}
+    .jstep__text h3{font-size:clamp(24px,7.5vw,34px)}
+    .gal-group__head{flex-wrap:wrap;gap:8px 12px}
+    .contact-copy .btn--solid{width:100%;justify-content:center}
+  }
+  @media(max-width:380px){
+    /* stack QR vertically so nothing is cut on the smallest phones */
+    .qr-card{flex-direction:column;text-align:center}
+    .qr-card__t{align-items:center}
+    .opening-title{font-size:clamp(26px,8vw,52px)}
+  }
 </style>
 </head>
 <body class="intro-lock">
