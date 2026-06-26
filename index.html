@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moduloo studio - עיצוב · תכנון · ביצוע</title>
+<meta name="description" content="Moduloo studio - ניהול פרויקטים מקצה לקצה. עיצוב, תכנון אדריכלי-הנדסי וביצוע של חללים מסחריים, תוך שילוב טכנולוגיות מתקדמות וחומרים חדשניים.">
+<meta property="og:title" content="Moduloo studio - עיצוב · תכנון · ביצוע">
+<meta property="og:description" content="ניהול פרויקטים מקצה לקצה - מהקונספט ועד המסירה.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="assets/img/logo-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=Frank+Ruhl+Libre:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#09080b;
+    --bg-2:#100e14;
+    --bg-3:#17141e;
+    --line:rgba(255,255,255,.10);
+    --line-strong:rgba(255,255,255,.18);
+    --text:#f5f3f8;
+    --muted:#a8a3b4;
+    --muted-2:#6f6a7b;
+    --accent:#622f93;     /* brand purple */
+    --accent-2:#a987d6;   /* light purple */
+    --accent-soft:rgba(98,47,147,.20);
+    --on-accent:#ffffff;  /* text on purple */
+    --radius:18px;
+    --max:1240px;
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Heebo",system-ui,-apple-system,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:#fff}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+  .serif{font-family:"Frank Ruhl Libre",serif}
+
+  /* ---------- Header ---------- */
+  header{
+    position:fixed;inset:0 0 auto 0;z-index:100;
+    padding:18px 0;
+    transition:background .4s var(--ease),padding .4s var(--ease),border-color .4s var(--ease);
+    border-bottom:1px solid transparent;
+  }
+  header.scrolled{
+    background:rgba(13,13,15,.82);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .nav__logo img{height:34px;width:auto}
+  .nav__links{display:flex;align-items:center;gap:34px}
+  .nav__links a{
+    font-size:15px;font-weight:500;color:var(--muted);
+    position:relative;padding:4px 0;transition:color .3s var(--ease);
+  }
+  .nav__links a::after{
+    content:"";position:absolute;bottom:-2px;right:0;left:auto;
+    width:0;height:1.5px;background:var(--accent);transition:width .35s var(--ease);
+  }
+  .nav__links a:hover{color:var(--text)}
+  .nav__links a:hover::after{width:100%}
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;
+    font-weight:600;font-size:15px;line-height:1;
+    padding:13px 24px;border-radius:100px;
+    border:1px solid var(--accent-2);color:var(--accent-2);
+    background:transparent;cursor:pointer;
+    transition:all .35s var(--ease);white-space:nowrap;
+  }
+  .btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);transform:translateY(-2px)}
+  .btn--solid{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .btn--solid:hover{background:#7a3cb5;border-color:#7a3cb5;color:#fff;box-shadow:0 14px 40px -12px rgba(98,47,147,.6)}
+  /* header CTA - must read on any background (gold hero + dark scrolled) */
+  .btn--nav{
+    background:#ffffff;color:#0d0d0f;border-color:#ffffff;
+    box-shadow:0 6px 22px -8px rgba(0,0,0,.55);
+  }
+  .btn--nav:hover{background:var(--accent-2);border-color:var(--accent-2);color:#0d0d0f;transform:translateY(-2px);box-shadow:0 14px 40px -12px rgba(98,47,147,.7)}
+  .btn svg{width:17px;height:17px}
+  .nav__burger{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:8px}
+  .nav__burger span{width:24px;height:2px;background:var(--text);transition:.3s var(--ease)}
+
+  /* ---------- Hero ---------- */
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+  .hero__bg{position:absolute;inset:0;z-index:0}
+  .hero__bg img{width:100%;height:100%;object-fit:cover;transform:scale(1.08);animation:slowzoom 18s ease-out forwards}
+  @keyframes slowzoom{to{transform:scale(1)}}
+  .hero__bg::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(13,13,15,.78) 0%,rgba(13,13,15,.55) 38%,rgba(13,13,15,.85) 100%),
+               radial-gradient(120% 90% at 80% 10%,rgba(98,47,147,.16),transparent 55%);
+  }
+  .hero__inner{position:relative;z-index:2;width:100%;padding:140px 0 80px}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:13px;font-weight:600;letter-spacing:.16em;color:var(--accent-2);
+    text-transform:uppercase;margin-bottom:26px;
+  }
+  .eyebrow::before{content:"";width:34px;height:1px;background:var(--accent)}
+  .hero h1{
+    font-family:"Frank Ruhl Libre",serif;font-weight:500;
+    font-size:clamp(46px,8vw,104px);line-height:1.02;letter-spacing:-.01em;
+    margin-bottom:26px;
+  }
+  .hero h1 b{font-weight:900;color:var(--accent-2)}
+  .hero h1 .sep{color:var(--muted-2);font-weight:300}
+  .hero p.lead{
+    font-size:clamp(17px,2.1vw,22px);color:var(--muted);max-width:620px;
+    font-weight:300;margin-bottom:42px;
+  }
+  .hero__cta{display:flex;gap:16px;flex-wrap:wrap}
+  .hero__scroll{
+    position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:3;
+    font-size:12px;letter-spacing:.2em;color:var(--muted-2);text-transform:uppercase;
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+  }
+  .hero__scroll i{width:1px;height:46px;background:linear-gradient(var(--accent),transparent);animation:drop 2s infinite}
+  @keyframes drop{0%{opacity:0;transform:scaleY(.3) translateY(-10px);transform-origin:top}50%{opacity:1}100%{opacity:0;transform:scaleY(1) translateY(10px);transform-origin:top}}
+
+  /* ---------- Section scaffolding ---------- */
+  section{position:relative}
+  .sec{padding:120px 0}
+  .sec-head{max-width:720px;margin-bottom:64px}
+  .sec-tag{
+    font-size:13px;font-weight:700;letter-spacing:.16em;color:var(--accent);
+    text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:12px;
+  }
+  .sec-tag::before{content:"";width:28px;height:1px;background:var(--accent)}
+  .sec-head h2{
+    font-family:"Frank Ruhl Libre",serif;font-weight:500;
+    font-size:clamp(32px,5vw,56px);line-height:1.08;letter-spacing:-.01em;margin-bottom:20px;
+  }
+  .sec-head p{font-size:clamp(16px,1.8vw,19px);color:var(--muted);font-weight:300}
+
+  /* ---------- Opening (journey on top) ---------- */
+  .opening{padding-top:118px}
+  .opening-head{text-align:center;margin-bottom:54px}
+  .opening-head .eyebrow{justify-content:center;margin-bottom:18px}
+  .opening-title{font-family:"Frank Ruhl Libre",serif;font-weight:500;
+    font-size:clamp(40px,7vw,82px);line-height:1.02;letter-spacing:-.01em}
+  .opening-title b{font-weight:900;color:var(--accent-2)}
+  .opening-title .sep{color:var(--muted-2);font-weight:300}
+  .lead-band{max-width:780px;margin:76px auto 0;text-align:center}
+  .lead-band p{font-size:clamp(17px,2vw,21px);color:var(--muted);font-weight:300}
+  .lead-band__cta{display:flex;gap:16px;justify-content:center;margin-top:32px;flex-wrap:wrap}
+  @media(max-width:560px){.opening{padding-top:96px}}
+
+  /* ---------- About ---------- */
+  #about{background:var(--bg)}
+  .about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center}
+  .about-copy h2{font-family:"Frank Ruhl Libre",serif;font-weight:500;font-size:clamp(30px,4.4vw,50px);line-height:1.1;margin-bottom:24px}
+  .about-copy p{font-size:18px;color:var(--muted);font-weight:300;margin-bottom:20px}
+  .about-copy p b{color:var(--text);font-weight:600}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+  .stat .n{font-family:"Frank Ruhl Libre",serif;font-size:clamp(34px,5vw,52px);font-weight:700;color:var(--accent-2);line-height:1}
+  .stat .l{font-size:14px;color:var(--muted);margin-top:8px}
+  .about-visual{position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:4/5}
+  .about-visual img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+  .about-visual:hover img{transform:scale(1.05)}
+  .about-visual::after{content:"";position:absolute;inset:0;border:1px solid var(--line);border-radius:var(--radius);pointer-events:none}
+
+  /* ---------- Process ---------- */
+  #process{background:linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%)}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .step{
+    background:var(--bg-3);border:1px solid var(--line);border-radius:var(--radius);
+    padding:40px 34px;position:relative;overflow:hidden;
+    transition:transform .5s var(--ease),border-color .5s var(--ease),background .5s var(--ease);
+  }
+  .step::before{
+    content:"";position:absolute;inset:0;border-radius:var(--radius);
+    background:radial-gradient(120% 100% at 100% 0,var(--accent-soft),transparent 60%);
+    opacity:0;transition:opacity .5s var(--ease);
+  }
+  .step:hover{transform:translateY(-8px);border-color:var(--line-strong)}
+  .step:hover::before{opacity:1}
+  .step__n{
+    font-family:"Frank Ruhl Libre",serif;font-size:15px;font-weight:700;color:var(--accent);
+    letter-spacing:.1em;margin-bottom:26px;display:flex;align-items:center;gap:10px;
+  }
+  .step__n span{display:inline-grid;place-items:center;width:42px;height:42px;border:1px solid var(--accent);border-radius:50%;font-size:16px}
+  .step h3{font-size:23px;font-weight:700;margin-bottom:14px;position:relative}
+  .step p{font-size:16px;color:var(--muted);font-weight:300;position:relative}
+
+  /* ---------- Projects ---------- */
+  #projects{background:var(--bg-2)}
+  .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .tile{
+    position:relative;border-radius:14px;overflow:hidden;cursor:pointer;
+    aspect-ratio:1/1;background:var(--bg-3);
+  }
+  .tile img{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease),filter .6s var(--ease);filter:saturate(.92)}
+  .tile::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(13,13,15,.65),transparent 55%);opacity:0;transition:opacity .5s var(--ease)}
+  .tile:hover img{transform:scale(1.08);filter:saturate(1.05)}
+  .tile:hover::after{opacity:1}
+  .tile__cap{
+    position:absolute;right:20px;bottom:18px;z-index:2;
+    transform:translateY(10px);opacity:0;transition:all .5s var(--ease);
+  }
+  .tile:hover .tile__cap{transform:translateY(0);opacity:1}
+  .tile__cap .k{font-size:12px;letter-spacing:.14em;color:var(--accent-2);text-transform:uppercase}
+  .tile__cap .t{font-size:18px;font-weight:600}
+  .tile .zoom{
+    position:absolute;top:16px;left:16px;z-index:2;width:38px;height:38px;border-radius:50%;
+    background:rgba(13,13,15,.5);backdrop-filter:blur(6px);display:grid;place-items:center;
+    opacity:0;transform:scale(.8);transition:all .45s var(--ease);border:1px solid var(--line);
+  }
+  .tile:hover .zoom{opacity:1;transform:scale(1)}
+  .tile .zoom svg{width:16px;height:16px;stroke:var(--text)}
+
+  /* ---------- Clients ---------- */
+  #clients{background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  #clients .sec{padding:78px 0}
+  .clients-lead{text-align:center;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-2);margin-bottom:46px}
+  .logos{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:54px 64px}
+  .logos img{
+    height:38px;width:auto;opacity:.55;filter:brightness(0) invert(1);
+    transition:opacity .4s var(--ease),transform .4s var(--ease);
+  }
+  .logos img:hover{opacity:1;transform:scale(1.06)}
+  .logos img.tall{height:54px}
+
+  /* ---------- Contact ---------- */
+  #contact{background:linear-gradient(180deg,var(--bg-2),var(--bg))}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+  .contact-copy h2{font-family:"Frank Ruhl Libre",serif;font-weight:500;font-size:clamp(34px,5vw,60px);line-height:1.05;margin-bottom:22px}
+  .contact-copy p{font-size:19px;color:var(--muted);font-weight:300;max-width:480px;margin-bottom:38px}
+  .contact-cards{display:flex;flex-direction:column;gap:16px}
+  .ccard{
+    display:flex;align-items:center;gap:18px;padding:22px 24px;
+    background:var(--bg-3);border:1px solid var(--line);border-radius:14px;
+    transition:border-color .4s var(--ease),transform .4s var(--ease),background .4s var(--ease);
+  }
+  .ccard:hover{border-color:var(--accent);transform:translateX(-6px);background:var(--bg-2)}
+  .ccard__ic{
+    flex:none;width:50px;height:50px;border-radius:12px;display:grid;place-items:center;
+    background:var(--accent-soft);border:1px solid rgba(98,47,147,.3);
+  }
+  .ccard__ic svg{width:22px;height:22px;stroke:var(--accent-2)}
+  .ccard__t .k{font-size:13px;color:var(--muted-2);margin-bottom:3px}
+  .ccard__t .v{font-size:17px;font-weight:600;direction:ltr;text-align:right;unicode-bidi:plaintext}
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--bg);border-top:1px solid var(--line);padding:54px 0 32px}
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .foot img{height:30px;opacity:.9}
+  .foot__links{display:flex;gap:26px;align-items:center}
+  .foot__links a{color:var(--muted);font-size:14px;transition:color .3s}
+  .foot__links a:hover{color:var(--accent)}
+  .foot__cr{margin-top:26px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--muted-2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+  /* ---------- Lightbox ---------- */
+  .lb{position:fixed;inset:0;z-index:200;background:rgba(8,8,9,.94);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:40px}
+  .lb.open{display:flex;animation:fade .3s var(--ease)}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .lb img{max-width:92vw;max-height:86vh;border-radius:10px;box-shadow:0 30px 80px -20px rgba(0,0,0,.8)}
+  .lb__x,.lb__nav{position:absolute;background:rgba(255,255,255,.08);border:1px solid var(--line);color:#fff;cursor:pointer;border-radius:50%;display:grid;place-items:center;transition:.3s var(--ease)}
+  .lb__x{top:26px;left:26px;width:46px;height:46px;font-size:22px}
+  .lb__nav{top:50%;transform:translateY(-50%);width:54px;height:54px;font-size:26px}
+  .lb__nav.prev{right:26px}.lb__nav.next{left:26px}
+  .lb__x:hover,.lb__nav:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  /* ---------- Reveal anim ---------- */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal[data-d="1"]{transition-delay:.08s}
+  .reveal[data-d="2"]{transition-delay:.16s}
+  .reveal[data-d="3"]{transition-delay:.24s}
+
+  /* ---------- Social float (logo-only, no background) ---------- */
+  .social-float{position:fixed;bottom:24px;left:24px;z-index:90;display:flex;flex-direction:column;gap:14px}
+  .sfab{display:grid;place-items:center;filter:drop-shadow(0 4px 12px rgba(0,0,0,.45));
+    transition:transform .35s var(--ease)}
+  .sfab:hover{transform:scale(1.12)}
+  .sfab--wa svg{width:52px;height:52px}
+  .sfab--ig svg{width:50px;height:50px}
+
+  /* ---------- Mobile ---------- */
+  @media(max-width:920px){
+    .about-grid,.contact-grid{grid-template-columns:1fr;gap:40px}
+    .steps{grid-template-columns:1fr}
+    .gallery{grid-template-columns:repeat(2,1fr)}
+    .about-visual{aspect-ratio:16/11}
+    .nav__links{
+      position:fixed;inset:0 0 0 30%;flex-direction:column;justify-content:center;gap:30px;
+      background:rgba(13,13,15,.97);backdrop-filter:blur(14px);
+      transform:translateX(100%);transition:transform .45s var(--ease);padding:40px;
+    }
+    .nav__links.open{transform:translateX(0)}
+    .nav__links a{font-size:20px}
+    .nav__links .btn{font-size:17px}
+    .nav__burger{display:flex;z-index:101}
+    .nav__burger.x span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .nav__burger.x span:nth-child(2){opacity:0}
+    .nav__burger.x span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  }
+  @media(max-width:540px){
+    .wrap{padding:0 20px}
+    .gallery{grid-template-columns:1fr}
+    .stats{gap:16px}
+    .sec{padding:84px 0}
+  }
+
+  /* ===== story journey ===== */
+  .sec-head.center{margin-left:auto;margin-right:auto;text-align:center}
+  .sec-head.center .sec-tag{justify-content:center}
+  .journey{display:flex;flex-direction:column;gap:84px;margin-top:72px}
+  .jstep{display:flex;gap:60px;align-items:center}
+  .jstep:nth-child(even){flex-direction:row-reverse}
+  .jstep__img{flex:1.08;position:relative;border-radius:18px;overflow:hidden;aspect-ratio:4/3}
+  .jstep__img img{width:100%;height:100%;object-fit:cover;transition:transform 1.3s var(--ease);filter:saturate(.97)}
+  .jstep:hover .jstep__img img{transform:scale(1.05)}
+  .jstep__img::after{content:"";position:absolute;inset:0;border:1px solid var(--line);border-radius:18px;pointer-events:none}
+  .jstep__num{position:absolute;bottom:-6px;right:18px;z-index:2;
+    font-family:"Frank Ruhl Libre",serif;font-weight:900;font-size:120px;line-height:1;
+    color:transparent;-webkit-text-stroke:1.5px rgba(169,135,214,.55);text-stroke:1.5px rgba(169,135,214,.55)}
+  .jstep:nth-child(even) .jstep__num{right:auto;left:18px}
+  .jstep__text{flex:.92}
+  .jstep__k{display:inline-flex;align-items:center;gap:12px;font-size:14px;font-weight:700;
+    letter-spacing:.12em;color:var(--accent);margin-bottom:18px}
+  .jstep__k::before{content:"";width:32px;height:1px;background:var(--accent)}
+  .jstep__text h3{font-family:"Frank Ruhl Libre",serif;font-weight:500;
+    font-size:clamp(28px,3.6vw,42px);line-height:1.1;margin-bottom:18px}
+  .jstep__text p{font-size:clamp(16px,1.7vw,18px);color:var(--muted);font-weight:300;max-width:480px}
+  @media(max-width:820px){
+    .jstep,.jstep:nth-child(even){flex-direction:column;gap:24px}
+    .jstep__img{width:100%;aspect-ratio:16/10}
+    .jstep__num{font-size:84px}
+    .jstep__text p{max-width:none}
+  }
+
+  /* ===== filterable masonry gallery ===== */
+  .filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px}
+  .filters button{
+    font-family:"Heebo",sans-serif;font-size:14px;font-weight:500;cursor:pointer;
+    color:var(--muted);background:transparent;border:1px solid var(--line);
+    padding:10px 20px;border-radius:100px;transition:all .35s var(--ease)}
+  .filters button:hover{color:var(--text);border-color:var(--line-strong)}
+  .filters button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .filters button .c{opacity:.55;font-size:12px;margin-right:5px}
+  .filters button.active .c{opacity:.8}
+
+  .masonry{column-count:3;column-gap:18px}
+  @media(max-width:900px){.masonry{column-count:2}}
+  @media(max-width:560px){.masonry{column-count:1}}
+  .gtile{
+    break-inside:avoid;margin:0 0 18px;position:relative;border-radius:14px;overflow:hidden;
+    cursor:pointer;background:var(--bg-3);display:block;
+    opacity:0;transform:translateY(22px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+  .gtile.in{opacity:1;transform:none}
+  .gtile.hide{display:none}
+  .gtile img{width:100%;height:auto;display:block;transition:transform 1s var(--ease),filter .6s var(--ease);filter:saturate(.94)}
+  .gtile::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(13,13,15,.74),transparent 52%);opacity:0;transition:opacity .5s var(--ease)}
+  .gtile:hover img{transform:scale(1.06);filter:saturate(1.06)}
+  .gtile:hover::after{opacity:1}
+  .gtile__cap{position:absolute;right:18px;bottom:16px;z-index:2;transform:translateY(8px);opacity:0;transition:all .5s var(--ease)}
+  .gtile:hover .gtile__cap{transform:none;opacity:1}
+  .gtile__cap .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-2)}
+  .gtile__cap .t{font-size:17px;font-weight:600;color:#fff;margin-top:2px}
+  .gtile .badge{position:absolute;top:14px;right:14px;z-index:2;font-size:11px;font-weight:600;
+    background:rgba(13,13,15,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    border:1px solid var(--line);color:var(--accent-2);padding:5px 12px;border-radius:100px;
+    opacity:0;transform:translateY(-6px);transition:all .45s var(--ease)}
+  .gtile:hover .badge{opacity:1;transform:none}
+
+  /* gallery category groups */
+  .gal-group{margin-bottom:60px}
+  .gal-group:last-child{margin-bottom:0}
+  .gal-group.hide{display:none}
+  .gal-group__head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+  .gal-group__head h3{font-family:"Frank Ruhl Libre",serif;font-weight:500;font-size:clamp(22px,3.4vw,32px);color:var(--text);line-height:1}
+  .gal-group__head .num{font-size:15px;color:var(--accent);font-weight:700}
+  .gal-group__head .en{margin-right:auto;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-2)}
+  @media(max-width:560px){.gal-group__head .en{display:none}}
+
+  /* QR card (instagram) */
+  .qr-card{display:flex;align-items:center;gap:20px;padding:16px;background:#fff;border-radius:16px;
+    border:1px solid var(--line);transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+  .qr-card:hover{transform:translateY(-3px);box-shadow:0 18px 44px -18px rgba(98,47,147,.6)}
+  .qr-card img{width:118px;height:118px;border-radius:10px;flex:none;display:block}
+  .qr-card__t{display:flex;flex-direction:column}
+  .qr-card__t .k{font-weight:700;font-size:16px;color:#100e14}
+  .qr-card__t .v{font-weight:700;color:var(--accent);direction:ltr;text-align:right;margin-top:2px}
+  .qr-card__t .d{font-size:13px;color:#6f6a7b;margin-top:8px;max-width:180px;line-height:1.4}
+
+  /* ===== intro video overlay ===== */
+  body.intro-lock{overflow:hidden;height:100vh}
+  #vintro{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;
+    transition:opacity .8s var(--ease),visibility .8s var(--ease)}
+  #vintro.out{opacity:0;visibility:hidden;pointer-events:none}
+  #vintro video{width:100%;height:100%;object-fit:cover}
+  .vintro-skip{position:absolute;top:22px;right:26px;z-index:3;
+    display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+    background:rgba(255,255,255,.12);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,.28);color:#fff;
+    font-family:"Heebo",sans-serif;font-weight:600;font-size:14px;
+    padding:9px 18px;border-radius:100px;transition:all .35s var(--ease)}
+  .vintro-skip:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .vintro-skip svg{width:15px;height:15px}
+  .vintro-sound{position:absolute;top:66px;right:26px;z-index:3;
+    display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+    background:rgba(255,255,255,.12);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,.28);color:#fff;
+    font-family:"Heebo",sans-serif;font-weight:600;font-size:14px;
+    padding:9px 18px;border-radius:100px;transition:all .35s var(--ease)}
+  .vintro-sound:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .vintro-sound svg{width:16px;height:16px}
+  .vintro-sound .ic-off{display:none}
+  .vintro-sound.muted .ic-on{display:none}
+  .vintro-sound.muted .ic-off{display:inline-flex}
+</style>
+</head>
+<body class="intro-lock">
+
+<!-- ===== INTRO VIDEO ===== -->
+<div id="vintro">
+  <video id="vintroVid" autoplay playsinline preload="auto">
+    <source src="assets/video/intro.mp4" type="video/mp4">
+  </video>
+  <button class="vintro-skip" id="vintroSkip" aria-label="דלג על הסרטון">
+    דלג
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 5l-7 7 7 7M20 5l-7 7 7 7"/></svg>
+  </button>
+  <button class="vintro-sound" id="vintroSound" aria-label="הפעלה או השתקה של קול">
+    <span class="lbl">קול</span>
+    <svg class="ic-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 010 7M19 5a9 9 0 010 14"/></svg>
+    <svg class="ic-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
+  </button>
+</div>
+
+<!-- HEADER -->
+<header id="hdr">
+  <div class="wrap nav">
+    <a href="#top" class="nav__logo"><img src="assets/img/logo-white.png" alt="Moduloo studio"></a>
+    <nav class="nav__links" id="navlinks">
+      <a href="#process">התהליך והשירות</a>
+      <a href="#about">אודות</a>
+      <a href="#projects">פרוייקטים</a>
+      <a href="#clients">לקוחות</a>
+      <a class="btn btn--nav" href="https://wa.me/972508649221" target="_blank" rel="noopener">דברו איתנו</a>
+    </nav>
+    <button class="nav__burger" id="burger" aria-label="תפריט"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- TOP: JOURNEY (opening) -->
+<section id="process" class="opening">
+  <span id="top"></span>
+  <div class="sec wrap">
+    <div class="opening-head reveal">
+      <span class="eyebrow">Moduloo studio · תל אביב</span>
+      <h1 class="opening-title">עיצוב <span class="sep">|</span> תכנון <span class="sep">|</span> <b>ביצוע</b></h1>
+    </div>
+    <div class="sec-head center reveal">
+      <div class="sec-tag">התהליך שלנו</div>
+      <h2>מהרעיון ועד הגשמת החלום</h2>
+      <p>כל חלל מתחיל ברעיון. אנחנו מלווים אותו דרך התכנון ועד שהוא קם לחיים - מסע אחד, רציף, שאתם בלב שלו.</p>
+    </div>
+
+    <div class="journey">
+      <article class="jstep reveal">
+        <div class="jstep__img"><img src="assets/gallery/process/process-2.jpg" alt="סקיצה ראשונית של הפרויקט"><span class="jstep__num">01</span></div>
+        <div class="jstep__text">
+          <div class="jstep__k">משלב הרעיון</div>
+          <h3>הכל מתחיל בקו אחד על הנייר</h3>
+          <p>אנחנו מתחילים בהקשבה - היכרות מעמיקה עם הצרכים, החלום והחזון. מכאן נולד הקונספט: הרעיון שמתרגם מחשבה לשפה עיצובית ברורה.</p>
+        </div>
+      </article>
+
+      <article class="jstep reveal">
+        <div class="jstep__img"><img src="assets/gallery/process/process-4.jpg" alt="תכנון אדריכלי ודגם"><span class="jstep__num">02</span></div>
+        <div class="jstep__text">
+          <div class="jstep__k">דרך התכנון</div>
+          <h3>תכנון שלא משאיר מקום להפתעות</h3>
+          <p>תכנון אדריכלי והנדסי מלא - אדריכלות, תאורה, מיזוג וחשמל מתואמים יחד עד הפרט האחרון. הכל נסגר על השרטוט, לפני שמתחילים לבנות.</p>
+        </div>
+      </article>
+
+      <article class="jstep reveal">
+        <div class="jstep__img"><img src="assets/gallery/hospitality/hospitality-1.jpg" alt="החלל המוגמר"><span class="jstep__num">03</span></div>
+        <div class="jstep__text">
+          <div class="jstep__k">ועד הגשמת החלום</div>
+          <h3>החלל קם לחיים</h3>
+          <p>ביצוע מקצה לקצה בשטח, עם שליטה מלאה בזמן, בתקציב ובאיכות. בסוף המסע אתם נכנסים בדיוק לחלל שדמיינתם - רק טוב יותר.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="lead-band reveal">
+      <p>ניהול פרויקטים מקצה לקצה - מהקונספט הראשוני ועד מסירת המפתח. אנחנו משלבים תכנון מדויק, טכנולוגיות מתקדמות וחומרים חדשניים, וממירים חזון לחלל שעובד.</p>
+      <div class="lead-band__cta">
+        <a class="btn btn--solid" href="#projects">לצפייה בפרויקטים</a>
+        <a class="btn" href="https://wa.me/972508649221" target="_blank" rel="noopener">בואו נבנה ביחד</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec wrap">
+    <div class="about-grid">
+      <div class="about-copy reveal">
+        <div class="sec-tag">אודות</div>
+        <h2>בונים את החלום הבא שלכם, מקצה לקצה</h2>
+        <p>ב-<b>Moduloo studio</b> אנחנו מתמחים בניהול פרויקטים מקצה לקצה - תוך שילוב טכנולוגיות מתקדמות וחומרים חדשניים.</p>
+        <p>אנחנו לוקחים אחריות מלאה על כל שרשרת הערך: מהאפיון והעיצוב, דרך התכנון האדריכלי וההנדסי, ועד הביצוע בשטח. נקודת מגע אחת, אחריות אחת, תוצאה אחת מושלמת.</p>
+        <div class="stats">
+          <div class="stat reveal" data-d="1"><div class="n">30+</div><div class="l">פרויקטים שבוצעו</div></div>
+          <div class="stat reveal" data-d="2"><div class="n">8+</div><div class="l">מותגים מובילים</div></div>
+          <div class="stat reveal" data-d="3"><div class="n">360°</div><div class="l">ניהול מקצה לקצה</div></div>
+        </div>
+      </div>
+      <div class="about-visual reveal" data-d="1">
+        <img src="assets/projects/project-4.jpg" alt="עבודת Moduloo">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sec wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag">פרוייקטים</div>
+      <h2>חללים שמספרים סיפור</h2>
+      <p>מבחר מתוך העבודות שלנו - משרדים, חללי אירוח, שוורומים, מיתוג ותערוכות. סננו לפי סוג העבודה.</p>
+    </div>
+
+    <div class="filters reveal" id="filters">
+      <button class="active" data-f="all">הכל <span class="c">26</span></button>
+      <button data-f="offices">משרדים <span class="c">7</span></button>
+      <button data-f="hospitality">אירוח ולאונג' <span class="c">5</span></button>
+      <button data-f="showrooms">שוורומים ותצוגה <span class="c">3</span></button>
+      <button data-f="branding">שילוט, מיתוג וגמרים <span class="c">8</span></button>
+      <button data-f="exhibitions">תערוכות וביתנים <span class="c">3</span></button>
+    </div>
+
+    <div id="gallery">
+      <div class="gal-group reveal" data-cat="offices">
+      <div class="gal-group__head"><h3>משרדים וחללי עבודה</h3><span class="num">7</span><span class="en">Offices &amp; Workspaces</span></div>
+      <div class="masonry">
+      <!-- offices -->
+      <div class="gtile reveal" data-cat="offices"><img src="assets/gallery/offices/offices-1.jpg" alt="מסדרון משרדים" loading="lazy"><span class="badge">משרדים</span><div class="gtile__cap"><div class="k">Workspace</div><div class="t">מסדרון ומשרדים</div></div></div>
+      <div class="gtile reveal" data-cat="offices"><img src="assets/gallery/offices/offices-2.jpg" alt="קבלה וכניסה" loading="lazy"><span class="badge">משרדים</span><div class="gtile__cap"><div class="k">Reception</div><div class="t">קבלה וכניסה</div></div></div>
+      <div class="gtile reveal" data-cat="offices"><img src="assets/gallery/offices/offices-3.jpg" alt="פינת ישיבה" loading="lazy"><span class="badge">משרדים</span><div class="gtile__cap"><div class="k">Breakout</div><div class="t">פינת ישיבה</div></div></div>
+      <div class="gtile reveal" data-cat="offices"><img src="assets/gallery/offices/offices-4.jpg" alt="אזור מעבר" loading="lazy"><span class="badge">משרדים</span><div class="gtile__cap"><div class="k">Corridor</div><div class="t">אזור מעבר</div></div></div>
+      <div class="gtile reveal" data-cat="offices"><img src="assets/gallery/offices/offices-5.jpg" alt="חלל לבן מודרני" loading="lazy"><span class="badge">משרדים</span><div class="gtile__cap"><div class="k">Interior</div><div class="t">חלל לבן מודרני</div></div></div>
+      <div class="gtile reveal" data-cat="offices"><img src="assets/gallery/offices/offices-6.jpg" alt="אזור שירות" loading="lazy"><span class="badge">משרדים</span><div class="gtile__cap"><div class="k">Service</div><div class="t">אזור שירות ואחסון</div></div></div>
+      <div class="gtile reveal" data-cat="offices"><img src="assets/gallery/offices/offices-7.jpg" alt="עמדת עבודה" loading="lazy"><span class="badge">משרדים</span><div class="gtile__cap"><div class="k">Desk</div><div class="t">עמדת עבודה</div></div></div>
+      </div></div>
+      <div class="gal-group reveal" data-cat="hospitality">
+      <div class="gal-group__head"><h3>אירוח ולאונג'</h3><span class="num">5</span><span class="en">Hospitality &amp; Lounge</span></div>
+      <div class="masonry">
+      <!-- hospitality -->
+      <div class="gtile reveal" data-cat="hospitality"><img src="assets/gallery/hospitality/hospitality-1.jpg" alt="קפיטריה ולאונג'" loading="lazy"><span class="badge">אירוח</span><div class="gtile__cap"><div class="k">Cafeteria</div><div class="t">קפיטריה ולאונג'</div></div></div>
+      <div class="gtile reveal" data-cat="hospitality"><img src="assets/gallery/hospitality/hospitality-2.jpg" alt="אזור אוכל" loading="lazy"><span class="badge">אירוח</span><div class="gtile__cap"><div class="k">Dining</div><div class="t">אזור אוכל</div></div></div>
+      <div class="gtile reveal" data-cat="hospitality"><img src="assets/gallery/hospitality/hospitality-3.jpg" alt="לאונג' אירוח" loading="lazy"><span class="badge">אירוח</span><div class="gtile__cap"><div class="k">Lounge</div><div class="t">לאונג' אירוח</div></div></div>
+      <div class="gtile reveal" data-cat="hospitality"><img src="assets/gallery/hospitality/hospitality-4.jpg" alt="פינת אירוח ממותגת" loading="lazy"><span class="badge">אירוח</span><div class="gtile__cap"><div class="k">Branded</div><div class="t">פינת אירוח ממותגת</div></div></div>
+      <div class="gtile reveal" data-cat="hospitality"><img src="assets/gallery/hospitality/hospitality-5.jpg" alt="אזור המתנה" loading="lazy"><span class="badge">אירוח</span><div class="gtile__cap"><div class="k">Waiting</div><div class="t">אזור המתנה</div></div></div>
+      </div></div>
+      <div class="gal-group reveal" data-cat="showrooms">
+      <div class="gal-group__head"><h3>שוורומים ותצוגה</h3><span class="num">3</span><span class="en">Showrooms</span></div>
+      <div class="masonry">
+      <!-- showrooms -->
+      <div class="gtile reveal" data-cat="showrooms"><img src="assets/gallery/showrooms/showrooms-1.jpg" alt="אולם תצוגה" loading="lazy"><span class="badge">שוורום</span><div class="gtile__cap"><div class="k">Showroom</div><div class="t">אולם תצוגה</div></div></div>
+      <div class="gtile reveal" data-cat="showrooms"><img src="assets/gallery/showrooms/showrooms-2.jpg" alt="אזור תצוגה" loading="lazy"><span class="badge">שוורום</span><div class="gtile__cap"><div class="k">Display</div><div class="t">אזור תצוגה</div></div></div>
+      <div class="gtile reveal" data-cat="showrooms"><img src="assets/gallery/showrooms/showrooms-3.jpg" alt="תצוגת רכב" loading="lazy"><span class="badge">שוורום</span><div class="gtile__cap"><div class="k">Automotive</div><div class="t">תצוגת רכב</div></div></div>
+      </div></div>
+      <div class="gal-group reveal" data-cat="branding">
+      <div class="gal-group__head"><h3>שילוט, מיתוג וגמרים</h3><span class="num">8</span><span class="en">Signage &amp; Finishes</span></div>
+      <div class="masonry">
+      <!-- branding -->
+      <div class="gtile reveal" data-cat="branding"><img src="assets/gallery/branding/branding-1.jpg" alt="קיר ממותג" loading="lazy"><span class="badge">מיתוג</span><div class="gtile__cap"><div class="k">Branded wall</div><div class="t">קיר ממותג מואר</div></div></div>
+      <div class="gtile reveal" data-cat="branding"><img src="assets/gallery/branding/branding-2.jpg" alt="שילוט על עץ" loading="lazy"><span class="badge">מיתוג</span><div class="gtile__cap"><div class="k">Signage</div><div class="t">שילוט על חיפוי עץ</div></div></div>
+      <div class="gtile reveal" data-cat="branding"><img src="assets/gallery/branding/branding-3.jpg" alt="אלמנט פיסולי" loading="lazy"><span class="badge">מיתוג</span><div class="gtile__cap"><div class="k">Sculptural</div><div class="t">אלמנט פיסולי</div></div></div>
+      <div class="gtile reveal" data-cat="branding"><img src="assets/gallery/branding/branding-4.jpg" alt="כניסה מוארת" loading="lazy"><span class="badge">מיתוג</span><div class="gtile__cap"><div class="k">Entrance</div><div class="t">כניסה ממותגת ומוארת</div></div></div>
+      <div class="gtile reveal" data-cat="branding"><img src="assets/gallery/branding/branding-5.jpg" alt="אותיות תלת-ממד" loading="lazy"><span class="badge">מיתוג</span><div class="gtile__cap"><div class="k">3D lettering</div><div class="t">אותיות תלת-ממד</div></div></div>
+      <div class="gtile reveal" data-cat="branding"><img src="assets/gallery/branding/branding-6.jpg" alt="לוגו על קיר עץ" loading="lazy"><span class="badge">מיתוג</span><div class="gtile__cap"><div class="k">Logo wall</div><div class="t">לוגו על קיר עץ</div></div></div>
+      <div class="gtile reveal" data-cat="branding"><img src="assets/gallery/branding/branding-7.jpg" alt="חיפוי עץ" loading="lazy"><span class="badge">גמרים</span><div class="gtile__cap"><div class="k">Cladding</div><div class="t">חיפוי עץ מעוצב</div></div></div>
+      <div class="gtile reveal" data-cat="branding"><img src="assets/gallery/branding/branding-8.jpg" alt="גמר אבן" loading="lazy"><span class="badge">גמרים</span><div class="gtile__cap"><div class="k">Stone finish</div><div class="t">גמר אבן ומרקם</div></div></div>
+      </div></div>
+      <div class="gal-group reveal" data-cat="exhibitions">
+      <div class="gal-group__head"><h3>תערוכות וביתנים</h3><span class="num">3</span><span class="en">Exhibitions &amp; Booths</span></div>
+      <div class="masonry">
+      <!-- exhibitions -->
+      <div class="gtile reveal" data-cat="exhibitions"><img src="assets/gallery/exhibitions/exhibitions-1.jpg" alt="אירוע השקה" loading="lazy"><span class="badge">תערוכה</span><div class="gtile__cap"><div class="k">Launch event</div><div class="t">אירוע השקה</div></div></div>
+      <div class="gtile reveal" data-cat="exhibitions"><img src="assets/gallery/exhibitions/exhibitions-2.jpg" alt="ביתן תערוכה" loading="lazy"><span class="badge">תערוכה</span><div class="gtile__cap"><div class="k">Booth</div><div class="t">ביתן תערוכה</div></div></div>
+      <div class="gtile reveal" data-cat="exhibitions"><img src="assets/gallery/exhibitions/exhibitions-3.jpg" alt="ביתן אינטראקטיבי" loading="lazy"><span class="badge">תערוכה</span><div class="gtile__cap"><div class="k">Interactive</div><div class="t">ביתן אינטראקטיבי</div></div></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section id="clients">
+  <div class="sec wrap">
+    <div class="clients-lead reveal">מותגים שבחרו לבנות איתנו</div>
+    <div class="logos reveal" data-d="1">
+      <img class="tall" src="assets/clients/storedot.png" alt="StoreDot">
+      <img src="assets/clients/ing.png" alt="ING">
+      <img src="assets/clients/migdal-david.png" alt="מגדל דוד">
+      <img src="assets/clients/renuar.png" alt="Renuar">
+      <img class="tall" src="assets/clients/aura.png" alt="Aura">
+      <img src="assets/clients/cariuma.png" alt="Cariuma">
+      <img src="assets/clients/hakeren.png" alt="הקרן">
+      <img class="tall" src="assets/clients/onn.png" alt="Onn">
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec wrap">
+    <div class="contact-grid">
+      <div class="contact-copy reveal">
+        <div class="sec-tag">דברו איתנו</div>
+        <h2>נשמח לבנות ביחד איתכם את החלום הבא</h2>
+        <p>יש לכם פרויקט, חלל או רעיון? ספרו לנו עליו - ונחזיר לכם תכנית ברורה איך הופכים אותו למציאות.</p>
+        <a class="btn btn--solid" href="https://wa.me/972508649221" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.115z"/></svg>
+          שליחת הודעה בוואטסאפ
+        </a>
+      </div>
+      <div class="contact-cards reveal" data-d="1">
+        <a class="ccard" href="https://wa.me/972508649221" target="_blank" rel="noopener">
+          <span class="ccard__ic"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg></span>
+          <span class="ccard__t"><span class="k">טלפון / וואטסאפ</span><span class="v">+972 50-864-9221</span></span>
+        </a>
+        <div class="ccard">
+          <span class="ccard__ic"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg></span>
+          <span class="ccard__t"><span class="k">סטודיו</span><span class="v">פלורנטין 17, תל אביב</span></span>
+        </div>
+        <a class="ccard" href="https://instagram.com/moduloo.studio" target="_blank" rel="noopener">
+          <span class="ccard__ic"><svg viewBox="0 0 24 24" fill="none" stroke="#a987d6" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1.1" fill="#a987d6" stroke="none"/></svg></span>
+          <span class="ccard__t"><span class="k">אינסטגרם</span><span class="v">@moduloo.studio</span></span>
+        </a>
+        <div class="qr-card">
+          <img src="assets/img/qr-instagram.png" alt="קוד QR לאינסטגרם של Moduloo studio">
+          <div class="qr-card__t">
+            <span class="k">סרקו ועברו לאינסטגרם</span>
+            <span class="v">@moduloo.studio</span>
+            <span class="d">פתחו את המצלמה בנייד וכוונו לקוד</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <img src="assets/img/logo-white.png" alt="Moduloo studio">
+      <div class="foot__links">
+        <a href="#process">השירות</a>
+        <a href="#about">אודות</a>
+        <a href="#projects">פרוייקטים</a>
+        <a href="https://wa.me/972508649221" target="_blank" rel="noopener">צרו קשר</a>
+      </div>
+    </div>
+    <div class="foot__cr">
+      <span>© 2026 Moduloo studio · פלורנטין 17, תל אביב</span>
+      <span>עיצוב · תכנון · ביצוע</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Social float: Instagram (top) + WhatsApp (bottom) -->
+<div class="social-float">
+  <a class="sfab sfab--ig" href="https://instagram.com/moduloo.studio" target="_blank" rel="noopener" aria-label="אינסטגרם">
+    <svg viewBox="0 0 24 24">
+      <defs><linearGradient id="iggrad" x1="2" y1="22" x2="22" y2="2" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#feda75"/><stop offset=".25" stop-color="#fa7e1e"/><stop offset=".5" stop-color="#d62976"/><stop offset=".75" stop-color="#962fbf"/><stop offset="1" stop-color="#4f5bd5"/>
+      </linearGradient></defs>
+      <rect x="2" y="2" width="20" height="20" rx="6" fill="url(#iggrad)"/>
+      <rect x="6.1" y="6.1" width="11.8" height="11.8" rx="3.7" fill="none" stroke="#fff" stroke-width="1.7"/>
+      <circle cx="12" cy="12" r="3.3" fill="none" stroke="#fff" stroke-width="1.7"/>
+      <circle cx="16.6" cy="7.4" r="1.15" fill="#fff"/>
+    </svg>
+  </a>
+  <a class="sfab sfab--wa" href="https://wa.me/972508649221" target="_blank" rel="noopener" aria-label="וואטסאפ">
+    <svg viewBox="0 0 32 32">
+      <path fill="#25D366" d="M16 0C7.164 0 0 7.164 0 16c0 2.82.737 5.467 2.025 7.762L0 32l8.45-2.215A15.93 15.93 0 0016 32c8.836 0 16-7.164 16-16S24.836 0 16 0z"/>
+      <path fill="#fff" d="M23.84 19.43c-.39-.196-2.31-1.14-2.667-1.27-.357-.13-.617-.196-.877.196-.26.39-1.006 1.27-1.234 1.53-.228.26-.455.293-.845.098-.39-.196-1.648-.608-3.14-1.937-1.16-1.035-1.943-2.314-2.17-2.704-.228-.39-.024-.6.17-.795.176-.175.39-.456.585-.684.196-.228.26-.39.39-.65.13-.26.065-.488-.033-.684-.098-.196-.877-2.115-1.202-2.896-.316-.76-.638-.657-.877-.67l-.747-.013c-.26 0-.683.098-1.04.488-.357.39-1.364 1.333-1.364 3.252s1.397 3.772 1.592 4.032c.196.26 2.75 4.2 6.663 5.89.93.402 1.657.642 2.223.822.934.297 1.784.255 2.456.155.75-.112 2.31-.944 2.636-1.855.325-.91.325-1.692.228-1.855-.098-.163-.357-.26-.747-.456z"/>
+    </svg>
+  </a>
+</div>
+
+<!-- Lightbox -->
+<div class="lb" id="lb">
+  <button class="lb__x" id="lbx" aria-label="סגירה">×</button>
+  <button class="lb__nav prev" id="lbprev" aria-label="הקודם">‹</button>
+  <img id="lbimg" src="" alt="">
+  <button class="lb__nav next" id="lbnext" aria-label="הבא">›</button>
+</div>
+
+<script>
+  // header scroll state
+  const hdr=document.getElementById('hdr');
+  addEventListener('scroll',()=>hdr.classList.toggle('scrolled',scrollY>30),{passive:true});
+
+  // mobile menu
+  const burger=document.getElementById('burger'),links=document.getElementById('navlinks');
+  burger.addEventListener('click',()=>{links.classList.toggle('open');burger.classList.toggle('x')});
+  links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');burger.classList.remove('x')}));
+
+  // reveal on scroll
+  const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.14});
+  document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
+
+  // gallery filters - show/hide whole category groups
+  const tiles=[...document.querySelectorAll('#gallery .gtile')];
+  const groups=[...document.querySelectorAll('#gallery .gal-group')];
+  document.querySelectorAll('#filters button').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('#filters button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const f=btn.dataset.f;
+      groups.forEach(g=>g.classList.toggle('hide',!(f==='all'||g.dataset.cat===f)));
+    });
+  });
+
+  // lightbox - navigates within currently visible tiles
+  const lb=document.getElementById('lb'),lbimg=document.getElementById('lbimg');
+  let view=[],cur=0;
+  function show(i){cur=(i+view.length)%view.length;lbimg.src=view[cur];}
+  tiles.forEach(t=>t.addEventListener('click',()=>{
+    view=tiles.filter(x=>x.offsetParent!==null).map(x=>x.querySelector('img').src);
+    cur=view.indexOf(t.querySelector('img').src);
+    show(cur);lb.classList.add('open');
+  }));
+  document.getElementById('lbx').onclick=()=>lb.classList.remove('open');
+  document.getElementById('lbnext').onclick=e=>{e.stopPropagation();show(cur+1)};
+  document.getElementById('lbprev').onclick=e=>{e.stopPropagation();show(cur-1)};
+  lb.addEventListener('click',e=>{if(e.target===lb)lb.classList.remove('open')});
+  addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;if(e.key==='Escape')lb.classList.remove('open');if(e.key==='ArrowLeft')show(cur+1);if(e.key==='ArrowRight')show(cur-1)});
+
+  // intro video overlay
+  (function(){
+    const vi=document.getElementById('vintro');
+    if(!vi)return;
+    const vid=document.getElementById('vintroVid');
+    let done=false;
+    function finish(){
+      if(done)return;done=true;
+      vi.classList.add('out');
+      document.body.classList.remove('intro-lock');
+      try{vid.pause()}catch(e){}
+      setTimeout(()=>vi.remove(),850);
+    }
+    document.getElementById('vintroSkip').addEventListener('click',finish);
+    addEventListener('keydown',e=>{if(e.key==='Escape'&&!done)finish()});
+    vid.addEventListener('ended',finish);
+    vid.addEventListener('error',finish);
+
+    // sound: try to play WITH audio by default, fall back to muted if the browser blocks it
+    const sBtn=document.getElementById('vintroSound'),lbl=sBtn.querySelector('.lbl');
+    function setSound(on){vid.muted=!on;sBtn.classList.toggle('muted',!on);lbl.textContent=on?'קול':'מושתק';}
+    sBtn.addEventListener('click',()=>setSound(vid.muted));
+    setSound(true);
+    const p=vid.play();
+    if(p&&p.catch){p.catch(()=>{setSound(false);vid.play().catch(()=>{});});}
+
+    if(matchMedia('(prefers-reduced-motion:reduce)').matches)finish();
+  })();
+</script>
+</body>
+</html>
