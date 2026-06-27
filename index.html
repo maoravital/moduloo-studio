@@ -142,24 +142,58 @@
   }
   .nav__links a:hover{color:var(--text)}
   .nav__links a:hover::after{width:100%}
+  /* ---------- Liquid Glass buttons ---------- */
   .btn{
     display:inline-flex;align-items:center;gap:9px;
     font-weight:600;font-size:15px;line-height:1;
-    padding:13px 24px;border-radius:100px;
-    border:1px solid var(--accent-2);color:var(--accent-2);
-    background:transparent;cursor:pointer;
-    transition:all .35s var(--ease);white-space:nowrap;
+    padding:14px 26px;border-radius:100px;
+    position:relative;overflow:hidden;isolation:isolate;
+    color:#fff;cursor:pointer;white-space:nowrap;
+    border:1px solid rgba(255,255,255,.18);
+    background:rgba(255,255,255,.06);
+    -webkit-backdrop-filter:blur(14px) saturate(160%);
+    backdrop-filter:blur(14px) saturate(160%);
+    box-shadow:0 4px 18px -6px rgba(0,0,0,.5),
+               inset 0 1px 0 rgba(255,255,255,.35),
+               inset 0 -8px 18px -10px rgba(255,255,255,.12);
+    transition:transform .35s var(--ease),box-shadow .35s var(--ease),background .35s var(--ease),border-color .35s var(--ease);
   }
-  .btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);transform:translateY(-2px)}
-  .btn--solid{background:var(--accent);color:#fff;border-color:var(--accent)}
-  .btn--solid:hover{background:#7a3cb5;border-color:#7a3cb5;color:#fff;box-shadow:0 14px 40px -12px rgba(98,47,147,.6)}
-  /* header CTA - glossy purple, black text, interactive */
+  /* specular sheen - the "liquid" highlight */
+  .btn::before{
+    content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;
+    background:linear-gradient(135deg,rgba(255,255,255,.25),transparent 44%);
+  }
+  .btn:hover{
+    transform:translateY(-2px);
+    background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.30);
+    box-shadow:0 14px 40px -10px rgba(98,47,147,.55),
+               inset 0 1px 0 rgba(255,255,255,.45),
+               inset 0 -8px 18px -10px rgba(255,255,255,.18);
+  }
+  .btn:active{transform:translateY(0) scale(.97)}
+  /* purple-tinted glass for the primary CTA */
+  .btn--solid{
+    background:rgba(98,47,147,.38);border-color:rgba(169,135,214,.5);
+    box-shadow:0 8px 26px -8px rgba(98,47,147,.6),
+               inset 0 1px 0 rgba(255,255,255,.4),
+               inset 0 -8px 20px -10px rgba(169,135,214,.3);
+  }
+  .btn--solid:hover{
+    background:rgba(122,60,181,.5);border-color:rgba(169,135,214,.7);color:#fff;
+    box-shadow:0 16px 44px -10px rgba(98,47,147,.8),
+               inset 0 1px 0 rgba(255,255,255,.5),
+               inset 0 -8px 20px -10px rgba(169,135,214,.4);
+  }
+  /* header CTA - liquid glass purple, interactive */
   .btn--nav{
-    position:relative;overflow:hidden;border:none;font-weight:700;color:#0d0d0f;
+    position:relative;overflow:hidden;isolation:isolate;border:1px solid rgba(169,135,214,.5);
+    font-weight:700;color:#fff;
     padding:13px 44px;letter-spacing:.02em;
-    background:linear-gradient(135deg,#b98ee8 0%,#8b54c4 52%,#6f37a8 100%);
-    box-shadow:0 8px 22px -8px rgba(98,47,147,.85), inset 0 1px 0 rgba(255,255,255,.45);
-    transition:transform .3s var(--ease), box-shadow .3s var(--ease), filter .3s var(--ease);
+    background:rgba(98,47,147,.34);
+    -webkit-backdrop-filter:blur(16px) saturate(170%);
+    backdrop-filter:blur(16px) saturate(170%);
+    box-shadow:0 8px 24px -8px rgba(98,47,147,.7), inset 0 1px 0 rgba(255,255,255,.5), inset 0 -10px 20px -12px rgba(169,135,214,.35);
+    transition:transform .3s var(--ease), box-shadow .3s var(--ease), filter .3s var(--ease), background .3s var(--ease);
   }
   .btn--nav::after{
     content:"";position:absolute;top:0;bottom:0;left:-65%;width:48%;z-index:1;
@@ -168,7 +202,7 @@
   }
   .btn--nav > *{position:relative;z-index:2}
   @keyframes btnShine{0%{left:-65%}55%{left:150%}100%{left:150%}}
-  .btn--nav:hover{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 14px 34px -8px rgba(98,47,147,1), inset 0 1px 0 rgba(255,255,255,.5)}
+  .btn--nav:hover{transform:translateY(-2px);filter:brightness(1.1);background:rgba(122,60,181,.46);box-shadow:0 16px 40px -8px rgba(98,47,147,.9), inset 0 1px 0 rgba(255,255,255,.55), inset 0 -10px 20px -12px rgba(169,135,214,.45)}
   .btn--nav:active{transform:translateY(0) scale(.98)}
   @media(prefers-reduced-motion:reduce){.btn--nav::after{animation:none;opacity:0}}
   .btn svg{width:17px;height:17px}
@@ -449,10 +483,13 @@
   .filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px}
   .filters button{
     font-family:"Heebo",sans-serif;font-size:14px;font-weight:500;cursor:pointer;
-    color:var(--muted);background:transparent;border:1px solid var(--line);
+    color:var(--muted);border:1px solid rgba(255,255,255,.16);
+    background:rgba(255,255,255,.05);
+    -webkit-backdrop-filter:blur(12px) saturate(150%);backdrop-filter:blur(12px) saturate(150%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.22);
     padding:10px 20px;border-radius:100px;transition:all .35s var(--ease)}
-  .filters button:hover{color:var(--text);border-color:var(--line-strong)}
-  .filters button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .filters button:hover{color:var(--text);background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.28)}
+  .filters button.active{color:#fff;background:rgba(98,47,147,.4);border-color:rgba(169,135,214,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 6px 18px -8px rgba(98,47,147,.6)}
   .filters button .c{opacity:.55;font-size:12px;margin-right:5px}
   .filters button.active .c{opacity:.8}
 
