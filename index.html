@@ -355,6 +355,24 @@
   }
   .logos img:hover{opacity:1;transform:scale(1.06)}
   .logos img.tall{height:54px}
+  /* moving brand marquee (auto-scroll, seamless, pause on hover) */
+  .logo-marquee{position:relative;overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+  .logo-track{display:flex;align-items:center;gap:64px;width:max-content;
+    animation:logoScroll 34s linear infinite;will-change:transform}
+  .logo-marquee:hover .logo-track{animation-play-state:paused}
+  .logo-track img{
+    height:38px;width:auto;flex:none;
+    filter:grayscale(100%) brightness(0) invert(1);opacity:.5;
+    transition:opacity .3s ease, transform .3s ease;
+  }
+  .logo-track img:hover{opacity:1;transform:scale(1.06)}
+  .logo-track img.tall{height:54px}
+  @keyframes logoScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){
+    .logo-track{animation:none;flex-wrap:wrap;justify-content:center;width:auto}
+  }
 
   /* ---------- Contact ---------- */
   #contact{background:linear-gradient(180deg,var(--bg-2),var(--bg))}
@@ -770,6 +788,35 @@
   </div>
 </section>
 
+<!-- CLIENTS -->
+<section id="clients">
+  <div class="sec wrap">
+    <div class="clients-lead reveal">מותגים שבחרו לבנות איתנו</div>
+    <div class="logo-marquee reveal" data-d="1">
+      <div class="logo-track">
+        <!-- set 1 -->
+        <img class="tall" src="assets/clients/storedot.webp" alt="StoreDot" width="450" height="114" decoding="async" loading="lazy">
+        <img src="assets/clients/ing.webp" alt="ING" width="300" height="202" decoding="async" loading="lazy">
+        <img src="assets/clients/migdal-david.webp" alt="מגדל דוד" width="572" height="146" decoding="async" loading="lazy">
+        <img src="assets/clients/renuar.webp" alt="Renuar" width="464" height="46" decoding="async" loading="lazy">
+        <img class="tall" src="assets/clients/aura.webp" alt="Aura" width="274" height="114" decoding="async" loading="lazy">
+        <img src="assets/clients/cariuma.webp" alt="Cariuma" width="480" height="88" decoding="async" loading="lazy">
+        <img src="assets/clients/hakeren.webp" alt="הקרן" width="450" height="114" decoding="async" loading="lazy">
+        <img class="tall" src="assets/clients/onn.webp" alt="Onn" width="236" height="258" decoding="async" loading="lazy">
+        <!-- set 2 (duplicate for seamless loop) -->
+        <img class="tall" src="assets/clients/storedot.webp" alt="" aria-hidden="true" width="450" height="114" decoding="async" loading="lazy">
+        <img src="assets/clients/ing.webp" alt="" aria-hidden="true" width="300" height="202" decoding="async" loading="lazy">
+        <img src="assets/clients/migdal-david.webp" alt="" aria-hidden="true" width="572" height="146" decoding="async" loading="lazy">
+        <img src="assets/clients/renuar.webp" alt="" aria-hidden="true" width="464" height="46" decoding="async" loading="lazy">
+        <img class="tall" src="assets/clients/aura.webp" alt="" aria-hidden="true" width="274" height="114" decoding="async" loading="lazy">
+        <img src="assets/clients/cariuma.webp" alt="" aria-hidden="true" width="480" height="88" decoding="async" loading="lazy">
+        <img src="assets/clients/hakeren.webp" alt="" aria-hidden="true" width="450" height="114" decoding="async" loading="lazy">
+        <img class="tall" src="assets/clients/onn.webp" alt="" aria-hidden="true" width="236" height="258" decoding="async" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- PROJECTS -->
 <section id="projects">
   <div class="sec wrap">
@@ -840,23 +887,6 @@
       <div class="gtile reveal" data-cat="exhibitions"><img src="assets/gallery/exhibitions/exhibitions-2.webp" alt="ביתן תערוכה" loading="lazy" width="1408" height="1174" decoding="async"><span class="badge">תערוכה</span><div class="gtile__cap"><div class="k">Booth</div><div class="t">ביתן תערוכה</div></div></div>
       <div class="gtile reveal" data-cat="exhibitions"><img src="assets/gallery/exhibitions/exhibitions-3.webp" alt="ביתן אינטראקטיבי" loading="lazy" width="1200" height="1137" decoding="async"><span class="badge">תערוכה</span><div class="gtile__cap"><div class="k">Interactive</div><div class="t">ביתן אינטראקטיבי</div></div></div>
       </div></div>
-    </div>
-  </div>
-</section>
-
-<!-- CLIENTS -->
-<section id="clients">
-  <div class="sec wrap">
-    <div class="clients-lead reveal">מותגים שבחרו לבנות איתנו</div>
-    <div class="logos reveal" data-d="1">
-      <img class="tall" src="assets/clients/storedot.webp" alt="StoreDot" width="450" height="114" decoding="async" loading="lazy">
-      <img src="assets/clients/ing.webp" alt="ING" width="300" height="202" decoding="async" loading="lazy">
-      <img src="assets/clients/migdal-david.webp" alt="מגדל דוד" width="572" height="146" decoding="async" loading="lazy">
-      <img src="assets/clients/renuar.webp" alt="Renuar" width="464" height="46" decoding="async" loading="lazy">
-      <img class="tall" src="assets/clients/aura.webp" alt="Aura" width="274" height="114" decoding="async" loading="lazy">
-      <img src="assets/clients/cariuma.webp" alt="Cariuma" width="480" height="88" decoding="async" loading="lazy">
-      <img src="assets/clients/hakeren.webp" alt="הקרן" width="450" height="114" decoding="async" loading="lazy">
-      <img class="tall" src="assets/clients/onn.webp" alt="Onn" width="236" height="258" decoding="async" loading="lazy">
     </div>
   </div>
 </section>
@@ -999,7 +1029,7 @@
     const vi=document.getElementById('vintro');
     if(!vi)return;
     const vid=document.getElementById('vintroVid');
-    let done=false,stage=1; // 1 = intro.mp4, 2 = intro2.mp4
+    let done=false,stage=1; // 1 = intro.mp4 (single video)
     function finish(){
       if(done)return;done=true;
       vi.classList.add('out');
@@ -1013,23 +1043,15 @@
       try{vid.pause()}catch(e){}
       setTimeout(finish,1800);
     }
-    // when the 1st video ends -> roll the 2nd; when the 2nd ends -> logo
+    // when the video ends -> logo
     function onEnded(){
       if(done)return;
-      if(stage===1){
-        stage=2;
-        vid.src='assets/video/intro2.mp4';
-        vid.load();
-        const p=vid.play();
-        if(p&&p.catch)p.catch(()=>{});
-      }else{
-        showLogoThenFinish();
-      }
+      showLogoThenFinish();
     }
     document.getElementById('vintroSkip').addEventListener('click',finish);
     addEventListener('keydown',e=>{if(e.key==='Escape'&&!done)finish()});
     vid.addEventListener('ended',onEnded);
-    vid.addEventListener('error',()=>{if(stage===1)onEnded();else showLogoThenFinish();});
+    vid.addEventListener('error',()=>{showLogoThenFinish();});
 
     // sound: try to play WITH audio by default, fall back to muted if the browser blocks it
     const sBtn=document.getElementById('vintroSound'),lbl=sBtn.querySelector('.lbl');
@@ -1062,7 +1084,7 @@
       });
     });
 
-    // 3) count-up stats (counting-dynamic-scale): 0 -> N, suffix preserved (+, deg)
+    // 3) count-up stats (counting-dynamic-scale): 0 -> N, suffix preserved (+, °)
     document.querySelectorAll('.stat .n').forEach(el=>{
       const m=el.textContent.trim().match(/^(\d+)(.*)$/);
       if(!m)return;
