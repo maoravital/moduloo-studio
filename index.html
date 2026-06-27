@@ -603,9 +603,25 @@
     .ig-mobile-btn svg{width:22px;height:22px;flex:none}
     .ig-mobile-btn .ig-handle{direction:ltr;unicode-bidi:isolate}
   }
+
+  /* ===== PRO MOTION UPGRADES (grounded in hyperframes-animation: count-up / stagger / press-spring) ===== */
+  /* scroll progress bar */
+  .scrollprog{position:fixed;top:0;right:0;left:0;height:3px;z-index:1100;background:transparent;pointer-events:none}
+  .scrollprog i{display:block;height:100%;width:0;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    box-shadow:0 0 12px rgba(169,135,214,.6)}
+  /* count-up: stop digits from reflowing the layout while ticking */
+  .stat .n{font-variant-numeric:tabular-nums}
+  /* tactile CTA press (press-release-spring) */
+  .btn--solid:active{transform:translateY(0) scale(.97)}
+  .lead-band__cta .btn:active,.hero__cta .btn:active,.contact-copy .btn:active{transform:scale(.97)}
+  @media(prefers-reduced-motion:reduce){.scrollprog{display:none}}
 </style>
 </head>
 <body class="intro-lock">
+
+<!-- scroll progress -->
+<div class="scrollprog" aria-hidden="true"><i></i></div>
 
 <!-- ===== INTRO VIDEO ===== -->
 <div id="vintro">
@@ -987,6 +1003,47 @@
     if(p&&p.catch){p.catch(()=>{setSound(false);vid.play().catch(()=>{});});}
 
     if(matchMedia('(prefers-reduced-motion:reduce)').matches)finish();
+  })();
+
+  /* ===== PRO MOTION UPGRADES ===== */
+  (function(){
+    const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+    // 1) top scroll-progress bar
+    const sp=document.querySelector('.scrollprog i');
+    if(sp){
+      const doc=document.documentElement;
+      const upd=()=>{const max=doc.scrollHeight-doc.clientHeight;
+        sp.style.width=(max>0?(doc.scrollTop/max*100):0).toFixed(2)+'%';};
+      addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd,{passive:true});upd();
+    }
+
+    // 2) staggered cascade for gallery tiles within each category group
+    document.querySelectorAll('#gallery .masonry').forEach(m=>{
+      [...m.querySelectorAll('.gtile')].forEach((t,i)=>{
+        t.style.transitionDelay=(Math.min(i,8)*0.07).toFixed(2)+'s';
+      });
+    });
+
+    // 3) count-up stats (counting-dynamic-scale): 0 -> N, suffix preserved (+, deg)
+    document.querySelectorAll('.stat .n').forEach(el=>{
+      const m=el.textContent.trim().match(/^(\d+)(.*)$/);
+      if(!m)return;
+      const target=+m[1],suffix=m[2];
+      if(reduce)return;
+      let done=false;
+      const co=new IntersectionObserver(es=>es.forEach(e=>{
+        if(!e.isIntersecting||done)return;
+        done=true;co.disconnect();
+        const dur=1500,t0=performance.now();
+        (function tick(now){
+          const p=Math.min((now-t0)/dur,1),eased=1-Math.pow(1-p,3);
+          el.textContent=Math.round(eased*target)+suffix;
+          if(p<1)requestAnimationFrame(tick);
+        })(t0);
+      }),{threshold:.6});
+      co.observe(el);
+    });
   })();
 </script>
 </body>
