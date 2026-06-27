@@ -976,23 +976,15 @@
       try{vid.pause()}catch(e){}
       setTimeout(finish,1800);
     }
-    // when the 1st video ends -> roll the 2nd; when the 2nd ends -> logo
+    // single branded sting -> it already ends on the Moduloo logo lockup, so fade straight into the site
     function onEnded(){
       if(done)return;
-      if(stage===1){
-        stage=2;
-        vid.src='assets/video/intro2.mp4';
-        vid.load();
-        const p=vid.play();
-        if(p&&p.catch)p.catch(()=>{});
-      }else{
-        showLogoThenFinish();
-      }
+      finish();
     }
     document.getElementById('vintroSkip').addEventListener('click',finish);
     addEventListener('keydown',e=>{if(e.key==='Escape'&&!done)finish()});
     vid.addEventListener('ended',onEnded);
-    vid.addEventListener('error',()=>{if(stage===1)onEnded();else showLogoThenFinish();});
+    vid.addEventListener('error',finish);
 
     // sound: try to play WITH audio by default, fall back to muted if the browser blocks it
     const sBtn=document.getElementById('vintroSound'),lbl=sBtn.querySelector('.lbl');
@@ -1025,7 +1017,7 @@
       });
     });
 
-    // 3) count-up stats (counting-dynamic-scale): 0 -> N, suffix preserved (+, deg)
+    // 3) count-up stats (counting-dynamic-scale): 0 -> N, suffix preserved (+, °)
     document.querySelectorAll('.stat .n').forEach(el=>{
       const m=el.textContent.trim().match(/^(\d+)(.*)$/);
       if(!m)return;
